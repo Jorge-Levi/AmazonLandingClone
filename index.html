@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Amazon Landing Clone</title>
     <link
-    href="node_modules/bootstrap/dist/css/bootstrap.min.css"
-    rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -61,16 +61,22 @@
     <div
       id="carouselExampleIndicators"
       class="carousel slide"
-      data-ride="carousel"
+      data-bs-ride="carousel"
     >
       <ol class="carousel-indicators">
         <li
-          data-target="#carouselExampleIndicators"
-          data-slide-to="0"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="0"
           class="active"
         ></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        <li
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="1"
+        ></li>
+        <li
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="2"
+        ></li>
       </ol>
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -99,7 +105,7 @@
         class="carousel-control-prev"
         href="#carouselExampleIndicators"
         role="button"
-        data-slide="prev"
+        data-bs-slide="prev"
       >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
@@ -108,7 +114,7 @@
         class="carousel-control-next"
         href="#carouselExampleIndicators"
         role="button"
-        data-slide="next"
+        data-bs-slide="next"
       >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
@@ -186,7 +192,9 @@
             <div class="card-body">
               <h5 class="card-title">Oferta 1</h5>
               <p class="card-text"><del>$50.00</del> $25.00</p>
-              <p class="text-danger">¡Oferta termina en 3h 12m!</p>
+              <p id="offerCountdown1" class="text-danger">
+                ¡Oferta termina en 3h 12m!
+              </p>
               <a href="#" class="btn btn-danger">Comprar ahora</a>
             </div>
           </div>
@@ -196,5 +204,6 @@
     </div>
 
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
   </body>
 </html>
