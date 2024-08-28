@@ -4,21 +4,19 @@ const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
 
-// Importación dinámica de gulp-imagemin y del
-async function getImagemin() {
-    const imagemin = (await import('gulp-imagemin')).default;
-    return imagemin;
-}
-
-async function getDel() {
+// Importación dinámica de del, gulp-imagemin y sus plugins
+async function getDependencies() {
     const { deleteAsync } = await import('del');
-    return deleteAsync;
+    const imagemin = (await import('gulp-imagemin')).default;
+    const mozjpeg = (await import('imagemin-mozjpeg')).default;
+    const optipng = (await import('imagemin-optipng')).default;
+    return { deleteAsync, imagemin, mozjpeg, optipng };
 }
 
 // Tarea para limpiar la carpeta dist
 gulp.task('clean', async function() {
-    const del = await getDel();
-    return del(['dist']);
+    const { deleteAsync } = await getDependencies();
+    return deleteAsync(['dist']);
 });
 
 // Tarea para minificar y agrupar JavaScript
@@ -27,7 +25,7 @@ gulp.task('scripts', function() {
         .pipe(concat('scripts.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'))
-        .pipe(browserSync.stream());  // Recargar navegador
+        .pipe(browserSync.stream());
 });
 
 // Tarea para minificar y agrupar CSS
@@ -36,14 +34,12 @@ gulp.task('styles', function() {
         .pipe(concat('styles.min.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('dist/css'))
-        .pipe(browserSync.stream());  // Recargar navegador
+        .pipe(browserSync.stream());
 });
 
 // Tarea para optimizar imágenes
-gulp.task('images', async function() {
-    const imagemin = await getImagemin();
+gulp.task('images', function() {
     return gulp.src('images/**/*')
-        .pipe(imagemin())
         .pipe(gulp.dest('dist/images'));
 });
 
