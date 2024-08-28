@@ -4,6 +4,23 @@ const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const browserSync = require('browser-sync').create();
 
+// Importación dinámica de gulp-imagemin y del
+async function getImagemin() {
+    const imagemin = (await import('gulp-imagemin')).default;
+    return imagemin;
+}
+
+async function getDel() {
+    const { deleteAsync } = await import('del');
+    return deleteAsync;
+}
+
+// Tarea para limpiar la carpeta dist
+gulp.task('clean', async function() {
+    const del = await getDel();
+    return del(['dist']);
+});
+
 // Tarea para minificar y agrupar JavaScript
 gulp.task('scripts', function() {
     return gulp.src('js/**/*.js')
@@ -22,6 +39,20 @@ gulp.task('styles', function() {
         .pipe(browserSync.stream());  // Recargar navegador
 });
 
+// Tarea para optimizar imágenes
+gulp.task('images', async function() {
+    const imagemin = await getImagemin();
+    return gulp.src('images/**/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/images'));
+});
+
+// Tarea para mover archivos HTML a la carpeta dist
+gulp.task('html', function() {
+    return gulp.src('*.html')
+        .pipe(gulp.dest('dist'));
+});
+
 // Tarea para servir el proyecto con BrowserSync
 gulp.task('serve', function() {
     browserSync.init({
@@ -36,3 +67,6 @@ gulp.task('serve', function() {
 
 // Tarea predeterminada que se ejecuta al correr "gulp"
 gulp.task('default', gulp.series('styles', 'scripts', 'serve'));
+
+// Definir la tarea `build` para correr todas las tareas anteriores
+gulp.task('build', gulp.series('clean', gulp.parallel('scripts', 'styles', 'images', 'html')));
